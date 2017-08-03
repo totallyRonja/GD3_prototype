@@ -6,6 +6,7 @@ using UnityEngine;
 public class SetCameraPosition : MonoBehaviour {
     [SerializeField] Transform player;
     [SerializeField] Vector3 offset;
+    [SerializeField] bool consistentHeight;
 
     // Use this for initialization
     void Start () {
@@ -14,6 +15,9 @@ public class SetCameraPosition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-        transform.position = player.position + offset;
+        Vector3 pos = player.position + offset;
+        if(consistentHeight)
+            pos.y = offset.y;
+        transform.position = pos;
     }
 }
