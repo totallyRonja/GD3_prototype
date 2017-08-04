@@ -10,6 +10,8 @@ public class Attacker : Hitable
     [Header("Sleeping")]
     [SerializeField]
     float wakeUpDistance;
+    [SerializeField]
+    float sleepDistance;
 
     [Header("Attacking")]
     [SerializeField]
@@ -59,6 +61,9 @@ public class Attacker : Hitable
 				velocity.y += -20 * Time.deltaTime;
                 velocity.z = (transform.forward * speed).z;
                 controller.Move(velocity * Time.deltaTime);
+
+                if (diff.magnitude > sleepDistance)
+                    state = EnemyState.Sleeping;
                 break;
 
             case EnemyState.Dying:

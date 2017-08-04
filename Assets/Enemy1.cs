@@ -18,7 +18,7 @@ public class Enemy1 : Hitable
     [SerializeField]
     float maxAttackDistance;
     [SerializeField]
-    Transform muzzle;
+    LineRenderer line;
     [SerializeField]
     GameObject bullet;
     [SerializeField]
@@ -103,43 +103,64 @@ public class Enemy1 : Hitable
         }
     }
 
-	void Attack()
-	{
-		//velocity magic
-		yVelocity += gravity * Time.deltaTime;
+    void Attack()
+    {
+        //velocity magic
+        yVelocity += gravity * Time.deltaTime;
         controller.Move(new Vector3(0, yVelocity, 0));
         if (controller.isGrounded)
             yVelocity = 0;
 
-		//direction magic
+        //direction magic
         Vector3 direction = (Player.current.transform.position - transform.position).normalized;
         transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, Vector3.up);
 
-		//shooting magic
-		if(Time.time - lastShotTime > shotDelay){
-            lastShotTime = Time.time;
-            Instantiate(bullet, muzzle.position, muzzle.rotation);
-        }
-
-		//transition magic
+        //transition magic
         if ((transform.position - Player.current.transform.position).magnitude < minAttackDistance)
         {
             state = EnemyState.Running;
         }
-		if ((transform.position - Player.current.transform.position).magnitude > maxAttackDistance)
-		{
+        else if ((transform.position - Player.current.transform.position).magnitude > maxAttackDistance)
+        {
             state = EnemyState.Following;
+        } else {
+            state = EnemyState.Shooting;
+            StartCoroutine(Shoot());
         }
-	}
+    }
 
-	void Die()
+    void Die()
 	{
-		if(timeOfDeath < 0)
+        line.enabled = false;
+        StopAllCoroutines();
+        if(timeOfDeath < 0)
             timeOfDeath = Time.time;
         controller.enabled = false;
         transform.Translate(Vector3.down * Time.deltaTime);
 		if(Time.time - timeOfDeath > 5)
             Destroy(gameObject);
+    }
+
+    IEnumerator Shoot(){
+        float distance = 100;
+        line.enabled = true;
+        line.widthMultiplier = 0.025f;
+        line.SetPosition(1, Vector3.forward * distance);
+        yield return new WaitForSeconds(1.5f);
+        line.widthMultiplier = 0.25f;
+
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.forward, out hit, distance)){
+            line.SetPosition(1, Vector3.forward * hit.distance);
+            Hitable health = hit.collider.GetComponent<Hitable>();
+            if(health){
+                health.Hit(3);
+            }
+        }
+        yield return new WaitForSeconds(0.25f);
+        line.enabled = false;
+        yield return new WaitForSeconds(0.25f);
+        state = EnemyState.Attacking;
     }
 
     public override bool Hit(int damage)
@@ -166,5 +187,6 @@ enum EnemyState
     Attacking, //shooting
     Following, //getting in shooting range
     Running, //running away
+    Shooting, //currently shooting
 	Dying //you know what's up
 }
