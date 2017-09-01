@@ -57,7 +57,7 @@ public class Player : Hitable
             transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg, Vector3.up);
             yVelocity += gravity * Time.deltaTime;
             Vector3 velocity = inputMag * speed * Time.deltaTime * transform.forward;
-            velocity.y = yVelocity;
+            velocity.y = yVelocity * Time.deltaTime;
             controller.Move(velocity);
             if (controller.isGrounded)
                 yVelocity = 0;
@@ -65,7 +65,7 @@ public class Player : Hitable
         else
         {
             yVelocity += gravity * Time.deltaTime;
-            controller.Move(new Vector3(0, yVelocity, 0));
+            controller.Move(new Vector3(0, yVelocity * Time.deltaTime, 0));
             if(controller.isGrounded)
                 yVelocity = 0;
         }
@@ -83,7 +83,7 @@ public class Player : Hitable
     void Aim()
     {
         yVelocity += gravity * Time.deltaTime;
-        controller.Move(new Vector3(0, yVelocity, 0));
+        controller.Move(new Vector3(0, yVelocity * Time.deltaTime, 0));
         if (controller.isGrounded)
             yVelocity = 0;
 
@@ -134,7 +134,7 @@ public class Player : Hitable
             transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg, Vector3.up);
             yVelocity += gravity * Time.deltaTime;
             Vector3 velocity = inputMag * runSpeed * Time.deltaTime * transform.forward;
-            velocity.y = yVelocity;
+            velocity.y = yVelocity * Time.deltaTime;
             controller.Move(velocity);
             if (controller.isGrounded)
                 yVelocity = 0;
