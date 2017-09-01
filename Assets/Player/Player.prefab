@@ -350,7 +350,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1938944977643838}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.484, z: 0}
+  m_LocalPosition: {x: 15.7, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4384806303452904}
@@ -1169,12 +1169,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ec09578100e5d45925b9d0315ab217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   speed: 5
   muzzle: {fileID: 4643896075406040}
   bullet: {fileID: 1419803354508174, guid: 7ecf748de64e8a3419399f9de7d0a2ad, type: 2}
   shotDelay: 0.25
   maxHP: 10
-  chargeTime: 2
+  chargeTime: 1
   runSpeed: 20
   runEmissionBuildup:
     serializedVersion: 2
