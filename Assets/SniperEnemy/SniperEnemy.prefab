@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 114653883143894472}
   - component: {fileID: 143380901487167580}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: SniperEnemy
   m_TagString: Evil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

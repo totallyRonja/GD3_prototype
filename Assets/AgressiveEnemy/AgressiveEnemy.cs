@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attacker : Hitable
+public class AgressiveEnemy : Hitable
 {
     [SerializeField]
     EnemyState state = EnemyState.Sleeping;
