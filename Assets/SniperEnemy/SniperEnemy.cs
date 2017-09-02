@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SniperEnemy : Hitable
 {
@@ -32,15 +33,15 @@ public class SniperEnemy : Hitable
     [SerializeField]
     int maxHP;
 
-    CharacterController controller;
+    NavMeshAgent agent;
     float timeOfDeath = -1; //time of dealth
     float lastShotTime = -1; //time of the last shot
-    float yVelocity = 0;
-    float gravity = -20;
+    //float yVelocity = 0;
+    //float gravity = -20;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        agent = GetComponent<NavMeshAgent>();
         health = maxHP;
     }
 
@@ -68,10 +69,10 @@ public class SniperEnemy : Hitable
 
 	void Sleep()
 	{
-		yVelocity += gravity * Time.deltaTime;
-        controller.Move(new Vector3(0, yVelocity, 0));
-        if (controller.isGrounded)
-            yVelocity = 0;
+		/*yVelocity += gravity * Time.deltaTime;
+        agent.Move(new Vector3(0, yVelocity, 0));
+        if (agent.isGrounded)
+            yVelocity = 0;*/
 
         if ((transform.position - Player.current.transform.position).magnitude < wakeUpDistance)
         {
@@ -81,10 +82,10 @@ public class SniperEnemy : Hitable
 
     void Follow()
     {
-        Vector3 velocity = Player.current.transform.position - transform.position;
-        velocity = velocity.normalized * speed;
-        controller.Move(velocity * Time.deltaTime);
-        transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
+        /*Vector3 velocity = Player.current.transform.position - transform.position;
+        velocity = velocity.normalized * speed;*/
+        agent.destination = Player.current.transform.position;
+        //transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
         if ((transform.position - Player.current.transform.position).magnitude < maxAttackDistance)
         {
             state = EnemyState.Attacking;
@@ -95,7 +96,7 @@ public class SniperEnemy : Hitable
     {
         Vector3 velocity = Player.current.transform.position - transform.position;
         velocity = velocity.normalized * speed;
-        controller.Move(-velocity * Time.deltaTime); //do the opposite of expected to run away
+        agent.Move(-velocity * Time.deltaTime); //do the opposite of expected to run away
         transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
         if ((transform.position - Player.current.transform.position).magnitude > minAttackDistance)
         {
@@ -105,16 +106,6 @@ public class SniperEnemy : Hitable
 
     void Attack()
     {
-        //velocity magic
-        yVelocity += gravity * Time.deltaTime;
-        controller.Move(new Vector3(0, yVelocity, 0));
-        if (controller.isGrounded)
-            yVelocity = 0;
-
-        //direction magic
-        Vector3 direction = (Player.current.transform.position - transform.position).normalized;
-        transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, Vector3.up);
-
         //transition magic
         if ((transform.position - Player.current.transform.position).magnitude < minAttackDistance)
         {
@@ -135,13 +126,20 @@ public class SniperEnemy : Hitable
         StopAllCoroutines();
         if(timeOfDeath < 0)
             timeOfDeath = Time.time;
-        controller.enabled = false;
+        agent.enabled = false;
         transform.Translate(Vector3.down * Time.deltaTime);
 		if(Time.time - timeOfDeath > 5)
             Destroy(gameObject);
     }
 
     IEnumerator Shoot(){
+        //velocity magic
+        agent.isStopped = true;
+
+        //direction magic
+        Vector3 direction = (Player.current.transform.position - transform.position).normalized;
+        transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, Vector3.up);
+
         float distance = 100;
         line.enabled = true;
         line.widthMultiplier = 0.025f;
@@ -161,6 +159,8 @@ public class SniperEnemy : Hitable
         line.enabled = false;
         yield return new WaitForSeconds(0.25f);
         state = EnemyState.Attacking;
+
+        agent.isStopped = false;
     }
 
     public override bool Hit(int damage)
@@ -177,6 +177,13 @@ public class SniperEnemy : Hitable
             }
         }
         return true;
+    }
+
+    public bool inRange(Vector3 location, float distance, bool inside = true){
+        if(Mathf.Abs(location.z - transform.position.z) > 2)
+            return false;
+        bool isInside = Vector3.Distance(transform.position, location) < distance;
+        return inside ? isInside : !isInside;
     }
 }
 

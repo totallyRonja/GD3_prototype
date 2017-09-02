@@ -73,6 +73,7 @@ ModelImporter:
     2300038: Entrance
     2300040: Exit
     2300042: Ground
+    2300044: //RootNode
     3300000: Circle
     3300002: Circle_001
     3300004: Circle_002
@@ -95,6 +96,7 @@ ModelImporter:
     3300038: Entrance
     3300040: Exit
     3300042: Ground
+    3300044: //RootNode
     4300000: Circle_007
     4300002: Circle_006
     4300004: Samus_Varia_Suit
