@@ -74,7 +74,7 @@ public class SniperEnemy : Hitable
         if (agent.isGrounded)
             yVelocity = 0;*/
 
-        if ((transform.position - Player.current.transform.position).magnitude < wakeUpDistance)
+        if (inRange(Player.current.transform.position, wakeUpDistance))
         {
             state = EnemyState.Following;
         }
@@ -86,7 +86,7 @@ public class SniperEnemy : Hitable
         velocity = velocity.normalized * speed;*/
         agent.destination = Player.current.transform.position;
         //transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
-        if ((transform.position - Player.current.transform.position).magnitude < maxAttackDistance)
+        if (inRange(Player.current.transform.position, maxAttackDistance))
         {
             state = EnemyState.Attacking;
         }
