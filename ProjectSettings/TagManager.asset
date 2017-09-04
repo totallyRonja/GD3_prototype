@@ -15,8 +15,8 @@ TagManager:
   - 
   - 
   - Environment
-  - 
-  - 
+  - Projectile
+  - SemiColliding
   - 
   - 
   - 

@@ -1200,7 +1200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  speed: 5
+  speed: 10
   muzzle: {fileID: 4643896075406040}
   bullet: {fileID: 1419803354508174, guid: 7ecf748de64e8a3419399f9de7d0a2ad, type: 2}
   shotDelay: 0.25
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e1aaa4ee0612c41bd73f6adbad9848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyMesh: {fileID: 100002, guid: ff11ab3a07f6b854bb66b2e3a1706f31, type: 3}
+  keyMesh: {fileID: 1022590675445048, guid: 9dc6b6894c7595841a74c8460d9b5896, type: 2}
   rotationSpeed: 2
   scale: 0.33333334
 --- !u!143 &143597306494741462
@@ -1260,9 +1260,9 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.8
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 30
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!198 &198816347710635322

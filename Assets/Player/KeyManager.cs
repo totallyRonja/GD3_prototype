@@ -23,6 +23,7 @@ public class KeyManager : MonoBehaviour
         {
             float angle = Time.time * rotationSpeed + (2 * Mathf.PI * i) / keys;
             transform.GetChild(i).localPosition = new Vector3(Mathf.Sin(angle), 2, Mathf.Cos(angle));
+            transform.GetChild(i).localEulerAngles = new Vector3(0, Time.time * 2f, 0);
             transform.GetChild(i).localScale = Vector3.one * scale;
         }
     }

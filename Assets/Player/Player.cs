@@ -24,7 +24,7 @@ public class Player : Hitable
     float yVelocity = 0;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         current = this;
         controller = GetComponent<CharacterController>();
@@ -50,7 +50,7 @@ public class Player : Hitable
 
     void Move()
     {
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         float inputMag = input.magnitude;
         if (inputMag > 0.1f)
         {
@@ -87,7 +87,7 @@ public class Player : Hitable
         if (controller.isGrounded)
             yVelocity = 0;
 
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         float inputMag = input.magnitude;
         if (inputMag > 0.1f)
         {
@@ -127,7 +127,7 @@ public class Player : Hitable
 
     void Run()
     {
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         float inputMag = input.magnitude;
         if (inputMag > 0.1f)
         {
