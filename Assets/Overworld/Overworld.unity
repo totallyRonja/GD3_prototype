@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0.07058824, b: 0.32156864, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -216,8 +216,8 @@ RectTransform:
   m_Father: {fileID: 352248648}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -21, y: -5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -232,6 +232,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efac20075705a9346a5f1afd44c10242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connections:
+  - node: {fileID: 298060976}
+    direction: {x: 0, y: -1}
+  - node: {fileID: 2082530458}
+    direction: {x: 2, y: 1}
+  - node: {fileID: 309685343}
+    direction: {x: -2, y: 1}
 --- !u!1 &286013639
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +315,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 298060975}
+  - component: {fileID: 298060976}
   m_Layer: 5
   m_Name: Fire
   m_TagString: Untagged
@@ -328,11 +336,29 @@ RectTransform:
   m_Father: {fileID: 352248648}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -23, y: -249}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &298060976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 298060974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efac20075705a9346a5f1afd44c10242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connections:
+  - node: {fileID: 246737972}
+    direction: {x: 0, y: 1}
+  - node: {fileID: 2082530458}
+    direction: {x: 1, y: 0}
+  - node: {fileID: 309685343}
+    direction: {x: -1, y: 0}
 --- !u!1 &309685341
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +367,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 309685342}
+  - component: {fileID: 309685343}
   m_Layer: 5
   m_Name: Ice
   m_TagString: Untagged
@@ -361,11 +388,29 @@ RectTransform:
   m_Father: {fileID: 352248648}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -231, y: 126}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &309685343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 309685341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efac20075705a9346a5f1afd44c10242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connections:
+  - node: {fileID: 246737972}
+    direction: {x: 2, y: -1}
+  - node: {fileID: 298060976}
+    direction: {x: -1, y: -2}
+  - node: {fileID: 2082530458}
+    direction: {x: 1, y: 2}
 --- !u!1 &352248647
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,6 +840,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1687913278}
+  - component: {fileID: 1687913279}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -821,6 +867,18 @@ RectTransform:
   m_AnchoredPosition: {x: -20.3, y: -7.3}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1687913279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1687913277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0214957a8ebe90f4fb21d908b711f7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentNode: {fileID: 246737972}
 --- !u!1 &2082530456
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,6 +887,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2082530457}
+  - component: {fileID: 2082530458}
   m_Layer: 5
   m_Name: Nature
   m_TagString: Untagged
@@ -849,8 +908,26 @@ RectTransform:
   m_Father: {fileID: 352248648}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 184, y: 133}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2082530458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2082530456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efac20075705a9346a5f1afd44c10242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connections:
+  - node: {fileID: 246737972}
+    direction: {x: -2, y: -1}
+  - node: {fileID: 298060976}
+    direction: {x: 1, y: -2}
+  - node: {fileID: 309685343}
+    direction: {x: -1, y: 2}

@@ -17,6 +17,7 @@ public class Player : Hitable
     [SerializeField] ParticleSystem runParticles;
     [SerializeField] float gravity = -10;
     [SerializeField] MovementState movement = MovementState.Moving;
+    [SerializeField] bool mouseControls;
 
     CharacterController controller;
     float lastShot;
@@ -50,9 +51,17 @@ public class Player : Hitable
 
     void Move()
     {
-        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        float inputMag = input.magnitude;
-        if (inputMag > 0.1f)
+        Vector2 input = Vector2.zero;
+        float inputMag = 0;
+        if(mouseControls){
+            input = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+            inputMag = Input.GetButton("Walk")?1:0;
+        } else
+        {
+            input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            inputMag = input.magnitude;
+        }
+        if (inputMag > 0.1f || mouseControls)
         {
             transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg, Vector3.up);
             yVelocity += gravity * Time.deltaTime;
