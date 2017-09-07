@@ -75,6 +75,7 @@ public class SniperEnemy : Enemy
 
     void Follow()
     {
+        agent.isStopped = false;
         /*Vector3 velocity = Player.current.transform.position - transform.position;
         velocity = velocity.normalized * speed;*/
         agent.speed = speed * (frozen>0?frozenSpeed:1);
@@ -88,6 +89,7 @@ public class SniperEnemy : Enemy
 
     void Flee()
     {
+        agent.isStopped = true;
         Vector3 velocity = Player.current.transform.position - transform.position;
         velocity = velocity.normalized * speed * (frozen > 0 ? frozenSpeed : 1);
         agent.Move(-velocity * Time.deltaTime); //do the opposite of expected to run away
@@ -158,8 +160,6 @@ public class SniperEnemy : Enemy
         line.enabled = false;
         yield return new WaitForSeconds(0.25f);
         state = EnemyState.Attacking;
-
-        agent.isStopped = false;
     }
 
     public override bool Hit(int damage)
@@ -179,7 +179,7 @@ public class SniperEnemy : Enemy
     }
 
     public bool inRange(Vector3 location, float distance, bool inside = true){
-        if(Mathf.Abs(location.z - transform.position.z) > 2)
+        if(Mathf.Abs(location.y - transform.position.y) > 2)
             return false;
         bool isInside = Vector3.Distance(transform.position, location) < distance;
         return inside ? isInside : !isInside;

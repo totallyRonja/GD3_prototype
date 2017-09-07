@@ -987,21 +987,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 136660427320370012, guid: 32fe7317cbda54346b3ff45e945d51f7,
-        type: 2}
-      propertyPath: m_Center.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 136660427320370012, guid: 32fe7317cbda54346b3ff45e945d51f7,
-        type: 2}
-      propertyPath: m_Height
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 195263319316355798, guid: 32fe7317cbda54346b3ff45e945d51f7,
-        type: 2}
-      propertyPath: m_Height
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32fe7317cbda54346b3ff45e945d51f7, type: 2}
   m_IsPrefabParent: 0
@@ -4454,6 +4439,11 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5dfb18b344182c04e91eb54afb1db4d7, type: 2}
+    - target: {fileID: 114060736911982866, guid: 212adfc3e787d9345a5af1811f6ae5af,
+        type: 2}
+      propertyPath: shotDelay
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 212adfc3e787d9345a5af1811f6ae5af, type: 2}
   m_IsPrefabParent: 0

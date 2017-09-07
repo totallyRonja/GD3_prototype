@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class Player : Hitable
 {
-    public static bool mouseControls = false;
+    public static bool mouseControls = true;
     public static Player current;
     public float speed;
     public Transform muzzle;
     public GameObject bullet;
     [Range(0.0f, 1f)] public float shotDelay;
+    public float chargeSpeed = 2;
     public int maxHP;
     public float gravity = -10;
 
@@ -67,6 +68,42 @@ public class Player : Hitable
         }
     }
 
+    void Shoot()
+    {
+        if (Time.time - lastShot < shotDelay && !chargingBullet)
+            return;
+
+        //run this before instancing so awake can run on the bullet
+        if (chargingBullet)
+        {
+            chargingBullet.controller.enabled = false;
+            chargingBullet.transform.position = muzzle.position;
+            chargingBullet.transform.rotation = muzzle.rotation;
+            if(Bullet.returning) chargingBullet.mesh.localEulerAngles = new Vector3(0, Time.time * 720, 0);
+
+            chargingBullet.SetPower(1+(Time.time - lastShot));
+
+            if(Input.GetButtonUp("Shoot") || Input.GetButtonDown("Shoot") || 1 + (Time.time - lastShot) >= 3){
+                chargingBullet.enabled = true;
+                chargingBullet.controller.enabled = true;
+                chargingBullet.Awake();
+                chargingBullet = null;
+            }
+        }
+
+        if (Input.GetButtonDown("Shoot"))
+        {
+            if (!Bullet.chargeable){
+                Instantiate(bullet, muzzle.position, muzzle.rotation);
+                lastShot = Time.time;
+            } else {
+                chargingBullet = Instantiate(bullet, muzzle.position, muzzle.rotation).GetComponent<Bullet>();
+                chargingBullet.enabled = false;
+                lastShot = Time.time;
+            }
+        }
+    }
+
     public override bool Hit(int damage)
     {
         health -= damage;
@@ -76,13 +113,5 @@ public class Player : Hitable
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         return true;
-    }
-
-    void Shoot()
-    {
-        if (Time.time - lastShot < shotDelay)
-            return;
-        Instantiate(bullet, muzzle.position, muzzle.rotation);
-        lastShot = Time.time;
     }
 }

@@ -14,19 +14,17 @@ public class Bullet : MonoBehaviour
     public Material frozenMaterial;
     public Mesh returningMesh;
 
-    CharacterController controller;
+    [HideInInspector] public CharacterController controller;
     float startTime;
-    Vector3 direction;
     Transform player;
-    Transform mesh;
+    [HideInInspector] public Transform mesh;
 
     // Use this for initialization
-    void Awake()
+    public void Awake()
     {
         controller = GetComponent<CharacterController>();
         startTime = Time.time;
         player = Player.current.transform;
-        direction = transform.forward;
         mesh = GetComponentInChildren<Renderer>().transform;
 
         if(freezing){
@@ -35,7 +33,7 @@ public class Bullet : MonoBehaviour
         if(returning){
             MeshFilter mf = mesh.GetComponent<MeshFilter>();
             mf.mesh = returningMesh;
-            mf.transform.localScale = Vector3.one * 2.5f;
+            mf.transform.localScale = Vector3.one * 0.5f;
         }
     }
 
@@ -43,7 +41,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         if(returning){
-            Vector3 flyForward = direction * speed * Time.deltaTime * 1.1f;
+            Vector3 flyForward = transform.forward * speed * Time.deltaTime * 1.1f;
             Vector3 flyToPlayer = ((player.position+Vector3.up * 1.5f) - transform.position).normalized * speed * Time.deltaTime * (Time.time - startTime);
             Vector3 flyDirection = flyForward + flyToPlayer;
             controller.Move(flyDirection);
@@ -52,12 +50,17 @@ public class Bullet : MonoBehaviour
             mesh.localEulerAngles = new Vector3(0, Time.time * 720, 0);
         }else
         {
-            controller.Move(direction * speed * Time.deltaTime);
+            controller.Move(transform.forward * speed * Time.deltaTime);
             if (Time.time - startTime > lifetime)
             {
                 Destroy(gameObject);
             }
         }
+    }
+
+    public void SetPower(float power){
+        damage = power;
+        transform.localScale = Vector3.one * power;
     }
 
     void OnControllerColliderHit(ControllerColliderHit coll)

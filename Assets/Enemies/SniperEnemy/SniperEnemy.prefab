@@ -188,9 +188,9 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: 18962f89cedc44f49addaf7b87edfc26, type: 2}
   frozenMaterial: {fileID: 2100000, guid: 044835c9e0b8a6c4380b5e23eaffdab8, type: 2}
   state: 0
-  wakeUpDistance: 25
+  wakeUpDistance: 15
   minAttackDistance: 5
-  maxAttackDistance: 30
+  maxAttackDistance: 20
   line: {fileID: 120137234656354290}
   shotDelay: 2
   speed: 5
