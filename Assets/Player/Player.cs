@@ -6,25 +6,27 @@ using UnityEngine.SceneManagement;
 public class Player : Hitable
 {
     public static Player current;
-    [SerializeField] float speed;
-    [SerializeField] Transform muzzle;
-    [SerializeField] GameObject bullet;
-    [SerializeField] [Range(0.0f, 1f)] float shotDelay;
-    [SerializeField] int maxHP;
-    [SerializeField] float chargeTime = 5;
-    [SerializeField] float runSpeed;
-    [SerializeField] AnimationCurve runEmissionBuildup;
-    [SerializeField] ParticleSystem runParticles;
-    [SerializeField] float gravity = -10;
-    [SerializeField] MovementState movement = MovementState.Moving;
-    [SerializeField] bool mouseControls;
+    public float speed;
+    public Transform muzzle;
+    public GameObject bullet;
+    [Range(0.0f, 1f)] public float shotDelay;
+    public int maxHP;
+    public float chargeTime = 5;
+    public float runSpeed;
+    public AnimationCurve runEmissionBuildup;
+    public ParticleSystem runParticles;
+    public float gravity = -10;
+    public MovementState movement = MovementState.Moving;
+    public bool mouseControls;
 
     CharacterController controller;
     float lastShot;
     float chargeRun = 0;
     float yVelocity = 0;
 
-    // Use this for initialization
+    //this part is only for charging
+    Bullet chargingBullet;
+
     void Awake()
     {
         current = this;
@@ -197,7 +199,7 @@ public class Player : Hitable
     }
 }
 
-enum MovementState{
+public enum MovementState{
     Moving,
     Aiming,
     Running

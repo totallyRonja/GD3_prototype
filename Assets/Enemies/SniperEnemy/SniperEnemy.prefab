@@ -97,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1081086873978076}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.2948165, y: 0, z: 12.345599}
+  m_LocalPosition: {x: -14.252387, y: 0, z: 17.205023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4691287582694824}
@@ -145,7 +145,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: fbc8aca053929f048a21100eaa018b61, type: 2}
+  - {fileID: 2100000, guid: 18962f89cedc44f49addaf7b87edfc26, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,14 +183,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  frozenTime: 5
+  frozenSpeed: 0.5
+  defaultMaterial: {fileID: 2100000, guid: 18962f89cedc44f49addaf7b87edfc26, type: 2}
+  frozenMaterial: {fileID: 2100000, guid: 044835c9e0b8a6c4380b5e23eaffdab8, type: 2}
   state: 0
   wakeUpDistance: 25
   minAttackDistance: 5
   maxAttackDistance: 30
   line: {fileID: 120137234656354290}
-  bullet: {fileID: 1419803354508174, guid: 7ecf748de64e8a3419399f9de7d0a2ad, type: 2}
   shotDelay: 2
-  speed: 10
+  speed: 5
   maxHP: 7
 --- !u!120 &120137234656354290
 LineRenderer:
@@ -286,7 +289,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1081086873978076}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 1
   m_Height: 4
   m_Direction: 1
@@ -311,4 +314,4 @@ NavMeshAgent:
   m_Height: 4
   m_BaseOffset: 0
   m_WalkableMask: 5
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4

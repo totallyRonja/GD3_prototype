@@ -4,38 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SniperEnemy : Hitable
+public class SniperEnemy : Enemy
 {
-	[SerializeField]
-    EnemyState state = EnemyState.Sleeping;
+    [Header("Current state")]
+	public EnemyState state = EnemyState.Sleeping;
 
     [Header("Sleeping")]
-    [SerializeField]
-    float wakeUpDistance;
+    public float wakeUpDistance;
 
     [Header("Attacking")]
-	[SerializeField]
-    float minAttackDistance;
-    [SerializeField]
-    float maxAttackDistance;
-    [SerializeField]
-    LineRenderer line;
-    [SerializeField]
-    GameObject bullet;
-    [SerializeField]
-    float shotDelay;
+	public float minAttackDistance;
+    public float maxAttackDistance;
+    public LineRenderer line;
+    public float shotDelay;
 
     [Header("Moving")]
-	[SerializeField]
-    float speed;
+	public float speed;
 
     [Header("Health")]
-    [SerializeField]
-    int maxHP;
+    public int maxHP;
 
     NavMeshAgent agent;
-    float timeOfDeath = -1; //time of dealth
-    float lastShotTime = -1; //time of the last shot
+    float timeOfDeath = -1; //time of death
+    //float lastShotTime = -1; //time of the last shot //replaced by IEnumerator
     //float yVelocity = 0;
     //float gravity = -20;
 
@@ -43,10 +34,12 @@ public class SniperEnemy : Hitable
     {
         agent = GetComponent<NavMeshAgent>();
         health = maxHP;
+        FrozenStart();
     }
 
     void Update()
     {
+        FrozenUpdate();
         switch (state)
         {
             case EnemyState.Sleeping:
@@ -58,8 +51,8 @@ public class SniperEnemy : Hitable
             case EnemyState.Following:
                 Follow();
                 break;
-            case EnemyState.Running:
-                Run();
+            case EnemyState.Fleeing:
+                Flee();
                 break;
 			case EnemyState.Dying:
                 Die();
@@ -84,6 +77,7 @@ public class SniperEnemy : Hitable
     {
         /*Vector3 velocity = Player.current.transform.position - transform.position;
         velocity = velocity.normalized * speed;*/
+        agent.speed = speed * (frozen>0?frozenSpeed:1);
         agent.destination = Player.current.transform.position;
         //transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
         if (inRange(Player.current.transform.position, maxAttackDistance))
@@ -92,10 +86,10 @@ public class SniperEnemy : Hitable
         }
     }
 
-    void Run()
+    void Flee()
     {
         Vector3 velocity = Player.current.transform.position - transform.position;
-        velocity = velocity.normalized * speed;
+        velocity = velocity.normalized * speed * (frozen > 0 ? frozenSpeed : 1);
         agent.Move(-velocity * Time.deltaTime); //do the opposite of expected to run away
         transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
         if ((transform.position - Player.current.transform.position).magnitude > minAttackDistance)
@@ -109,7 +103,7 @@ public class SniperEnemy : Hitable
         //transition magic
         if ((transform.position - Player.current.transform.position).magnitude < minAttackDistance)
         {
-            state = EnemyState.Running;
+            state = EnemyState.Fleeing;
         }
         else if ((transform.position - Player.current.transform.position).magnitude > maxAttackDistance)
         {
@@ -133,9 +127,6 @@ public class SniperEnemy : Hitable
     }
 
     IEnumerator Shoot(){
-        //velocity magic
-        agent.isStopped = true;
-
         //direction magic
         Vector3 direction = (Player.current.transform.position - transform.position).normalized;
         transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, Vector3.up);
@@ -144,7 +135,15 @@ public class SniperEnemy : Hitable
         line.enabled = true;
         line.widthMultiplier = 0.025f;
         line.SetPosition(1, Vector3.forward * distance);
-        yield return new WaitForSeconds(1.5f);
+
+        float startTime = Time.time;
+        while(Time.time < startTime + shotDelay - 0.5f){
+            yield return null;
+            //stop agent if it's not falling
+            if(!agent.isOnOffMeshLink)
+                agent.isStopped = true;
+        }
+        //yield return new WaitForSeconds(1.5f);
         line.widthMultiplier = 0.25f;
 
         RaycastHit hit;
@@ -188,12 +187,12 @@ public class SniperEnemy : Hitable
 }
 
 [Serializable]
-enum EnemyState
+public enum EnemyState
 {
     Sleeping, //not doing anything
     Attacking, //shooting
     Following, //getting in shooting range
-    Running, //running away
+    Fleeing, //running away
     Shooting, //currently shooting
 	Dying //you know what's up
 }

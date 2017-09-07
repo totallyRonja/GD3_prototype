@@ -5,17 +5,18 @@ using UnityEngine.UI;
 
 public class UpgradeButton : MonoBehaviour {
 
-	public void SetBoomerang(bool boomerangState){
-        Bullet.boomerang = boomerangState;
+	public void SetReturning(bool changeTo){
+        Bullet.returning = changeTo;
+        //print("returning now "+changeTo);
     }
 
-    public void SetCharge(bool boomerangState)
+    public void SetCharge(bool changeTo)
     {
-        Debug.LogWarning("charge not implemented");
+        Bullet.chargeable = changeTo;
     }
 
-    public void SetUpgrade(bool boomerangState)
+    public void SetFreezing(bool changeTo)
     {
-        Debug.LogWarning("3rd Upgrade not implemented");
+        Bullet.freezing = changeTo;
     }
 }

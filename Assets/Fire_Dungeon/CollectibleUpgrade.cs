@@ -14,7 +14,7 @@ public class CollectibleUpgrade : MonoBehaviour {
         gameObject.SetActive(false);
         switch(upgrade){
 			case UpgradeType.RETURN:
-                Bullet.boomerang = true;
+                Bullet.returning = true;
                 break;
 			case UpgradeType.CHARGE:
 				
