@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public static bool returning = false;
-    public static bool chargeable = false;
-    public static bool freezing = false;
-
     public float speed;
     public float lifetime;
     public float damage = 1;
@@ -27,10 +23,10 @@ public class Bullet : MonoBehaviour
         player = Player.current.transform;
         mesh = GetComponentInChildren<Renderer>().transform;
 
-        if(freezing){
+        if(BulletTypeManager.freezing){
             mesh.GetComponent<Renderer>().material = frozenMaterial;
         }
-        if(returning){
+        if(BulletTypeManager.returning){
             MeshFilter mf = mesh.GetComponent<MeshFilter>();
             mf.mesh = returningMesh;
             mf.transform.localScale = Vector3.one * 0.5f;
@@ -40,7 +36,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(returning){
+        if(BulletTypeManager.returning){
             Vector3 flyForward = transform.forward * speed * Time.deltaTime * 1.1f;
             Vector3 flyToPlayer = ((player.position+Vector3.up * 1.5f) - transform.position).normalized * speed * Time.deltaTime * (Time.time - startTime);
             Vector3 flyDirection = flyForward + flyToPlayer;
@@ -68,7 +64,7 @@ public class Bullet : MonoBehaviour
         Hitable hpComponent = coll.gameObject.GetComponent<Hitable>();
         if(hpComponent && (coll.transform != player)){
             hpComponent.Hit(Mathf.FloorToInt(damage));
-            if(freezing){
+            if(BulletTypeManager.freezing){
                 Enemy enemy = coll.gameObject.GetComponent<Enemy>();
                 if(enemy){
                     enemy.Freeze();

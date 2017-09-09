@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Player : Hitable
 {
-    public static bool mouseControls = true;
     public static Player current;
     public float speed;
     public Transform muzzle;
@@ -39,7 +38,7 @@ public class Player : Hitable
     void Move(){
         Vector2 input = Vector2.zero;
         float inputMag = 0;
-        if (mouseControls)
+        if (StaticInfo.mouseControls)
         {
             input = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
             inputMag = Input.GetButton("Walk") ? 1 : 0;
@@ -49,7 +48,7 @@ public class Player : Hitable
             input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             inputMag = input.magnitude;
         }
-        if (inputMag > 0.1f || mouseControls)
+        if (inputMag > 0.1f || StaticInfo.mouseControls)
         {
             transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg, Vector3.up);
             yVelocity += gravity * Time.deltaTime;
@@ -79,7 +78,7 @@ public class Player : Hitable
             chargingBullet.controller.enabled = false;
             chargingBullet.transform.position = muzzle.position;
             chargingBullet.transform.rotation = muzzle.rotation;
-            if(Bullet.returning) chargingBullet.mesh.localEulerAngles = new Vector3(0, Time.time * 720, 0);
+            if(BulletTypeManager.returning) chargingBullet.mesh.localEulerAngles = new Vector3(0, Time.time * 720, 0);
 
             chargingBullet.SetPower(1+(Time.time - lastShot));
 
@@ -93,7 +92,7 @@ public class Player : Hitable
 
         if (Input.GetButtonDown("Shoot"))
         {
-            if (!Bullet.chargeable){
+            if (!BulletTypeManager.chargeable){
                 Instantiate(bullet, muzzle.position, muzzle.rotation);
                 lastShot = Time.time;
             } else {

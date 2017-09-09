@@ -1,29 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OverworldPlayer : MonoBehaviour {
 
-    public WorldNode currentNode;
+    public static OverworldPlayer current;
+    public static WorldNode currentNode;
+
+    public WorldNode startNode;
 
     bool isMoving = false;
 
-    // Update is called once per frame
+    void Start(){
+        current = this;
+        if (currentNode == null)
+        {
+            currentNode = startNode; 
+        }
+        transform.position = currentNode.transform.position;
+    }
+
     void Update () {
+        if(isMoving)
+            return;
+
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-		if(input.magnitude > .9f && !isMoving){
+		if(input.magnitude > .9f){
 			foreach(Connection con in currentNode.connections){
                 float scalar = Vector2.Dot(input.normalized, con.direction.normalized);
-                print(scalar);
                 if(scalar > 0.5f){
                     StartCoroutine(Wander(con.node));
                     break;
                 }
             }
 		}
+
+        if(Input.GetButtonDown("Shoot") && 
+                !string.IsNullOrEmpty(currentNode.sceneName) &&
+                ((Input.mousePosition - ((RectTransform)transform).position) / Screen.height).magnitude < 0.2f){
+            SceneManager.LoadScene(currentNode.sceneName);
+        }
     }
 
-	IEnumerator Wander(WorldNode toNode){
+    public void GoTo(WorldNode toNode){
+        if(toNode != currentNode && !isMoving){
+            StartCoroutine(Wander(toNode));
+            print("Go To " + toNode.name);
+        }
+    }
+
+	public IEnumerator Wander(WorldNode toNode){
         isMoving = true;
         float startTime = Time.unscaledTime;
 		while(Time.unscaledTime < startTime + 1){

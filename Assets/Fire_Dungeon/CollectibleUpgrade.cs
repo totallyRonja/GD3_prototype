@@ -14,23 +14,17 @@ public class CollectibleUpgrade : MonoBehaviour {
         gameObject.SetActive(false);
         switch(upgrade){
 			case UpgradeType.RETURN:
-                Bullet.returning = true;
+                StaticInfo.returning = true;
                 break;
 			case UpgradeType.CHARGE:
-				
+				StaticInfo.chargeable = true;
                 break;
-			case UpgradeType.TODO:
-
+			case UpgradeType.FREEZE:
+                StaticInfo.freezing = true;
                 break;
 			default:
                 Debug.LogWarning("Invalid collectible type");
                 break;
         }
 	}
-}
-
-public enum UpgradeType{
-	RETURN,
-	CHARGE,
-	TODO
 }
