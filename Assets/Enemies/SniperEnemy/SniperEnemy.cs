@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class SniperEnemy : Enemy
 {
     [Header("Current state")]
-	public EnemyState state = EnemyState.Sleeping;
+	public EnemyState state = EnemyState.Idling;
 
     [Header("Sleeping")]
     public float wakeUpDistance;
@@ -39,10 +39,9 @@ public class SniperEnemy : Enemy
 
     void Update()
     {
-        FrozenUpdate();
         switch (state)
         {
-            case EnemyState.Sleeping:
+            case EnemyState.Idling:
                 Sleep();
                 break;
             case EnemyState.Attacking:
@@ -78,8 +77,8 @@ public class SniperEnemy : Enemy
         agent.isStopped = false;
         /*Vector3 velocity = Player.current.transform.position - transform.position;
         velocity = velocity.normalized * speed;*/
-        agent.speed = speed * (frozen>0?frozenSpeed:1);
-        agent.destination = Player.current.transform.position;
+        agent.speed = speed * (frozen?frozenSpeed:1);
+        agent.SetDestination(Player.current.transform.position);
         //transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
         if (inRange(Player.current.transform.position, maxAttackDistance))
         {
@@ -91,7 +90,7 @@ public class SniperEnemy : Enemy
     {
         agent.isStopped = true;
         Vector3 velocity = Player.current.transform.position - transform.position;
-        velocity = velocity.normalized * speed * (frozen > 0 ? frozenSpeed : 1);
+        velocity = velocity.normalized * speed * (frozen ? frozenSpeed : 1);
         agent.Move(-velocity * Time.deltaTime); //do the opposite of expected to run away
         transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg, Vector3.up);
         if ((transform.position - Player.current.transform.position).magnitude > minAttackDistance)
@@ -102,12 +101,13 @@ public class SniperEnemy : Enemy
 
     void Attack()
     {
+        print(Vector3.Distance(Player.current.transform.position, transform.position));
         //transition magic
-        if ((transform.position - Player.current.transform.position).magnitude < minAttackDistance)
+        if (inRange(Player.current.transform.position, minAttackDistance))
         {
             state = EnemyState.Fleeing;
         }
-        else if ((transform.position - Player.current.transform.position).magnitude > maxAttackDistance)
+        else if (inRange(Player.current.transform.position, maxAttackDistance, false))
         {
             state = EnemyState.Following;
         } else {
@@ -149,8 +149,8 @@ public class SniperEnemy : Enemy
         line.widthMultiplier = 0.25f;
 
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, distance)){
-            line.SetPosition(1, Vector3.forward * hit.distance);
+        if(Physics.Raycast(line.transform.position, transform.forward, out hit, distance)){
+            line.SetPosition(1, Vector3.forward * (hit.distance + 0.5f));
             Hitable health = hit.collider.GetComponent<Hitable>();
             if(health){
                 health.Hit(3);
@@ -162,7 +162,7 @@ public class SniperEnemy : Enemy
         state = EnemyState.Attacking;
     }
 
-    public override bool Hit(int damage)
+    public override bool Hit(int damage, Vector3 point)
     {
         if (state != EnemyState.Dying)
         {
@@ -171,28 +171,24 @@ public class SniperEnemy : Enemy
             {
                 state = EnemyState.Dying;
             } else {
-				if(state == EnemyState.Sleeping)
+				if(state == EnemyState.Idling)
                     state = EnemyState.Following;
             }
         }
         return true;
     }
 
-    public bool inRange(Vector3 location, float distance, bool inside = true){
-        if(Mathf.Abs(location.y - transform.position.y) > 2)
-            return false;
-        bool isInside = Vector3.Distance(transform.position, location) < distance;
-        return inside ? isInside : !isInside;
-    }
-}
+    void OnDrawGizmosSelected(){
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.Translate(transform.position) * Matrix4x4.Scale(new Vector3(1, 2 / minAttackDistance, 1));
+        Gizmos.DrawWireSphere(Vector3.zero, minAttackDistance);
 
-[Serializable]
-public enum EnemyState
-{
-    Sleeping, //not doing anything
-    Attacking, //shooting
-    Following, //getting in shooting range
-    Fleeing, //running away
-    Shooting, //currently shooting
-	Dying //you know what's up
+        Gizmos.color = Color.green;
+        Gizmos.matrix = Matrix4x4.Translate(transform.position) * Matrix4x4.Scale(new Vector3(1, 2 / maxAttackDistance, 1));
+        Gizmos.DrawWireSphere(Vector3.zero, maxAttackDistance);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.matrix = Matrix4x4.Translate(transform.position) * Matrix4x4.Scale(new Vector3(1, 2 / wakeUpDistance, 1));
+        Gizmos.DrawWireSphere(Vector3.zero, wakeUpDistance);
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ButtonDoor : Hitable {
 
-	public override bool Hit(int damage){
+	public override bool Hit(int damage, Vector3 point){
         transform.parent.gameObject.SetActive(false);
         return true;
     }

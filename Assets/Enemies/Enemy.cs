@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class Enemy : Hitable {
 	[Header("Freeze behaviour")]
@@ -9,30 +10,43 @@ public abstract class Enemy : Hitable {
     public Material defaultMaterial;
     public Material frozenMaterial;
 
-    protected float frozen = 0; //frozen when > 0; count down 1 per second
+    protected bool frozen = false;
     protected Renderer render;
     Color baseColor;
 
     public void Freeze(){
-        frozen = frozenTime;
+        StopCoroutine("UnFreeze");
         render.material = frozenMaterial;
+        StartCoroutine(UnFreeze(frozenTime));
+        frozen = true;
     }
 
-	public void UnFreeze(){
-		render.material = defaultMaterial;
-	}
+	public IEnumerator UnFreeze(float delay){
+        yield return new WaitForSeconds(delay);
+        render.material = defaultMaterial;
+        frozen = false;
+    }
 
 	protected void FrozenStart(){
         render = GetComponentInChildren<Renderer>();
     }
 
-	protected void FrozenUpdate(){
-        if (frozen > 0)
-        {
-            frozen -= Time.deltaTime;
-            if(frozen <= 0){
-                UnFreeze();
-            }
-        }
+    public bool inRange(Vector3 location, float distance, bool inside = true, bool heightCheck = true)
+    {
+        if (heightCheck && Mathf.Abs(location.y - transform.position.y) > 0.25f)
+            return !inside;
+        bool isInside = Vector3.Distance(transform.position, location) < distance;
+        return inside ? isInside : !isInside;
     }
+}
+
+[Serializable]
+public enum EnemyState
+{
+    Idling, //not doing anything
+    Attacking, //shooting
+    Following, //getting in shooting range
+    Fleeing, //running away
+    Shooting, //currently shooting
+    Dying //you know what's up
 }

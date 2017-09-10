@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AgressiveEnemy : Hitable
+public class AgressiveEnemy : Enemy
 {
     [SerializeField]
-    EnemyState state = EnemyState.Sleeping;
+    EnemyState state = EnemyState.Idling;
 
     [Header("Sleeping")]
     [SerializeField]
@@ -40,7 +40,7 @@ public class AgressiveEnemy : Hitable
     {
         switch (state)
         {
-            case EnemyState.Sleeping:
+            case EnemyState.Idling:
 				velocity.x = 0;
 				velocity.y += -20 * Time.deltaTime;
                 velocity.z = 0;
@@ -63,7 +63,7 @@ public class AgressiveEnemy : Hitable
                 controller.Move(velocity * Time.deltaTime);
 
                 if (diff.magnitude > sleepDistance)
-                    state = EnemyState.Sleeping;
+                    state = EnemyState.Idling;
                 break;
 
             case EnemyState.Dying:
@@ -78,7 +78,7 @@ public class AgressiveEnemy : Hitable
                 break;
             default:
                 Debug.Log("Invalid state");
-                state = EnemyState.Sleeping;
+                state = EnemyState.Idling;
                 break;
         }
     }
@@ -93,7 +93,7 @@ public class AgressiveEnemy : Hitable
         }
     }
 
-    public override bool Hit(int damage)
+    public override bool Hit(int damage, Vector3 point)
     {
         health -= damage;
         if (health <= 0)

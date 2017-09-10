@@ -103,7 +103,7 @@ public class Player : Hitable
         }
     }
 
-    public override bool Hit(int damage)
+    public override bool Hit(int damage, Vector3 point)
     {
         health -= damage;
         if (health <= 0)

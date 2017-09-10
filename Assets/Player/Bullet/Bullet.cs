@@ -63,7 +63,7 @@ public class Bullet : MonoBehaviour
     {
         Hitable hpComponent = coll.gameObject.GetComponent<Hitable>();
         if(hpComponent && (coll.transform != player)){
-            hpComponent.Hit(Mathf.FloorToInt(damage));
+            hpComponent.Hit(Mathf.FloorToInt(damage), coll.point);
             if(BulletTypeManager.freezing){
                 Enemy enemy = coll.gameObject.GetComponent<Enemy>();
                 if(enemy){

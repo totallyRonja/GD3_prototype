@@ -14,7 +14,7 @@ public class Gate : Hitable {
 		
 	}
 
-	public override bool Hit(int damage){
+	public override bool Hit(int damage, Vector3 point){
 		if(KeyManager.current.useKey()){
             gameObject.SetActive(false);
         }
