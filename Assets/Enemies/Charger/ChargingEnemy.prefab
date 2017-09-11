@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 195200517093010544}
   - component: {fileID: 143777831926282636}
   - component: {fileID: 114621108175660258}
+  - component: {fileID: 136681951325869274}
   m_Layer: 0
   m_Name: ChargingEnemy
   m_TagString: Untagged
@@ -481,7 +482,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1502084724765020}
-  m_LocalRotation: {x: -0.32921216, y: -0.07744744, z: -0.5412924, w: 0.7698205}
+  m_LocalRotation: {x: -0.3292122, y: -0.077447444, z: -0.5412925, w: 0.76982063}
   m_LocalPosition: {x: 0.0021961383, y: 0.0071402653, z: 0.008666089}
   m_LocalScale: {x: 0.99999994, y: 1, z: 1}
   m_Children: []
@@ -673,8 +674,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1247139645694068}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.55, y: 0, z: 12.61}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -15.71, y: 6, z: 37.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4860035863134150}
@@ -1718,6 +1719,7 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: 18962f89cedc44f49addaf7b87edfc26, type: 2}
   frozenMaterial: {fileID: 2100000, guid: 044835c9e0b8a6c4380b5e23eaffdab8, type: 2}
   state: 0
+  maxHp: 3
   anim: {fileID: 95974424667792176}
   walkRadius: 8
   newPointDelay: 4
@@ -1725,7 +1727,20 @@ MonoBehaviour:
   walkSpeed: 2
   chargeSpeed: 20
   damage: 4
-  waitTime: 1
+  waitTime: 2
+--- !u!136 &136681951325869274
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1247139645694068}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 4
+  m_Direction: 1
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!143 &143777831926282636
 CharacterController:
   m_ObjectHideFlags: 1

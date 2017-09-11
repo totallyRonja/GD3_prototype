@@ -102,4 +102,14 @@ public class AgressiveEnemy : Enemy
         }
         return true;
     }
+
+    void OnDrawGizmosSelected(){
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.Translate(transform.position) * Matrix4x4.Scale(new Vector3(1, 0.1f / wakeUpDistance, 1));
+        Gizmos.DrawWireSphere(Vector3.zero, wakeUpDistance);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.matrix = Matrix4x4.Translate(transform.position) * Matrix4x4.Scale(new Vector3(1, 0.1f / sleepDistance, 1));
+        Gizmos.DrawWireSphere(Vector3.zero, sleepDistance);
+    }
 }

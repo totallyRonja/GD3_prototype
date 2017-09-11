@@ -199,12 +199,13 @@ public class ChargerEnemy : Enemy
 
     public override bool Hit(int damage, Vector3 damagePoint = new Vector3())
     {
-        TransitionTo(EnemyState.Attacking);
-        startCharging = Time.time - waitTime;
-
-        print(Vector3.Dot((transform.position - damagePoint).normalized, transform.forward));
-        if(!armored || Vector3.Dot((transform.position - damagePoint).normalized, transform.forward) > 0)
+        if (!armored || Vector3.Dot((transform.position - damagePoint).normalized, transform.forward) > 0)
+        {
             health -= damage;
+            TransitionTo(EnemyState.Attacking);
+            startCharging = Time.time - waitTime;
+
+        }
 
         if (health <= 0)
         {
