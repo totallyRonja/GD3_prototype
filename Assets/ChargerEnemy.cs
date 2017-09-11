@@ -171,7 +171,7 @@ public class ChargerEnemy : Enemy
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.normal.y < 0.1f)
+        if (hit.normal.y < 0.8f)
         {
             Hitable targetHitable = hit.gameObject.GetComponent<Hitable>();
             if (targetHitable)
@@ -179,7 +179,6 @@ public class ChargerEnemy : Enemy
                 targetHitable.Hit(damage);
             }
             TransitionTo(EnemyState.Idling);
-
         }
     }
 
@@ -202,8 +201,11 @@ public class ChargerEnemy : Enemy
         if (!armored || Vector3.Dot((transform.position - damagePoint).normalized, transform.forward) > 0)
         {
             health -= damage;
-            TransitionTo(EnemyState.Attacking);
-            startCharging = Time.time - waitTime;
+            if (state == EnemyState.Idling || state == EnemyState.Following)
+            {
+                TransitionTo(EnemyState.Attacking);
+                startCharging = Time.time - waitTime;
+            }
 
         }
 
