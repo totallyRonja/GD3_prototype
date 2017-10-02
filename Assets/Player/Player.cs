@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Player : Hitable
 {
-    public static bool mouseControls = true;
+    public static bool mouseControls = false;
     public static Player current;
+    
     public float speed;
     public Transform muzzle;
     public GameObject bullet;
@@ -14,10 +15,13 @@ public class Player : Hitable
     public float chargeSpeed = 2;
     public int maxHP;
     public float gravity = -10;
+    public Transform arrow;
+
 
     CharacterController controller;
     float lastShot;
     float yVelocity = 0;
+    Vector2 input;
 
     //this part is only for charging
     Bullet chargingBullet;
@@ -27,6 +31,7 @@ public class Player : Hitable
         current = this;
         controller = GetComponent<CharacterController>();
         health = maxHP;
+        arrow.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -37,7 +42,7 @@ public class Player : Hitable
     }
 
     void Move(){
-        Vector2 input = Vector2.zero;
+        input = Vector2.zero;
         float inputMag = 0;
         if (mouseControls)
         {
