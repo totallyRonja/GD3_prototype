@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Wood_Testlevel/WoodsLevel.unity
+    guid: e0637f5f527f8154f9d13c8bbffefe9a
+  - enabled: 1
     path: Assets/Overworld/Overworld.unity
     guid: 6cedb31368b70e24e888c9caf02a468c
   - enabled: 1
     path: Assets/Fire_Dungeon/FireDungeon.unity
     guid: f7e2f01de157ea849b36013a3f12662c
-  - enabled: 1
-    path: Assets/Wood_Testlevel/WoodsLevel.unity
-    guid: e0637f5f527f8154f9d13c8bbffefe9a

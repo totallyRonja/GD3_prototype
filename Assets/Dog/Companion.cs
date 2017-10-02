@@ -10,6 +10,7 @@ public class Companion : MonoBehaviour {
     public GameObject selector;
 	public float selectorWidth = 1;
     public float commandDistance = 10;
+    public float cursorSpeed;
 
     private Vector3 prevPlayerPos;
     private NavMeshAgent agent;
@@ -17,6 +18,8 @@ public class Companion : MonoBehaviour {
     private Vector3 difference;
 
     private Vector3? target = null;
+    private NavMeshAgent cursor;
+    private bool aiming;
 
     // Use this for initialization
     void Start () {
@@ -24,13 +27,15 @@ public class Companion : MonoBehaviour {
             player = Player.current;
 
         agent = GetComponent<NavMeshAgent>();
+        cursor = selector.GetComponent<NavMeshAgent>();
 
         selector.SetActive(false);
     }
 	
 	// Update is called once per frame
 	void Update () {
-        TagObject();
+        //TagObject();
+        MoveCursor();
         Move();
         //SecondStick();
     }
@@ -42,9 +47,35 @@ public class Companion : MonoBehaviour {
         	transform.eulerAngles = Vector3.up * Mathf.Atan2(motion.x, motion.z) * Mathf.Rad2Deg;
     }
 
+    void MoveCursor(){
+        Vector3 input = new Vector3(Input.GetAxis("Horizontal2"), 0, Input.GetAxis("Vertical2"));
+        if (input.magnitude > 0.9f)
+        {
+            if(!aiming){
+                aiming = true;
+                cursor.Warp(Player.current.transform.position);
+                selector.SetActive(true);
+            }
+
+            Time.timeScale = 0.05f;
+
+            cursor.enabled = true;
+            cursor.Move(input * cursorSpeed * Time.unscaledDeltaTime);
+            cursor.enabled = false;
+
+            target = selector.transform.position;
+            agent.SetDestination(target.Value);
+        }
+        else
+        {
+            aiming = false;
+            Time.timeScale = 1f;
+        }
+    }
+
     void TagObject(){
 		Vector3 input = new Vector3(Input.GetAxis("Horizontal2"), 0, Input.GetAxis("Vertical2"));
-		if(input.magnitude > 0.9f){
+		if(input.magnitude > 0.2f){
             Time.timeScale = 0.1f;
             Player.current.arrow.gameObject.SetActive(true);
             Player.current.arrow.eulerAngles = Vector3.up * Mathf.Atan2(input.x, input.z) * Mathf.Rad2Deg;
@@ -88,8 +119,11 @@ public class Companion : MonoBehaviour {
     }
 
     void Move(){
-        if(target.HasValue && Vector3.Distance(Player.current.transform.position, target.Value) > commandDistance)
+        if (target.HasValue && Vector3.Distance(Player.current.transform.position, target.Value) > commandDistance)
+        {
             target = null;
+            selector.SetActive(false);
+        }
         if(!target.HasValue)
         	agent.SetDestination(AheadPosition());
     }
